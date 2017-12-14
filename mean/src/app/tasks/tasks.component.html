@@ -43,7 +43,7 @@
                         <span>Status : <span class="font-weight-bold" [class.to-do-title]="task.status == 'To Do'" [class.in-progress-title]="task.status == 'In Progress'" [class.completed-title]="task.status == 'Completed'">{{task.status}}</span></span>
                     </div>
                     <div class="col-md-2">
-                        <button class="float-right" (click)="deleteTask(task._id)" mat-raised-button color="primary">
+                        <button class="float-right" (click)="deleteTask(task)" mat-raised-button color="primary">
                             Delete
                         </button>
                     </div>

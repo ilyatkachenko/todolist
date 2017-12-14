@@ -18,8 +18,8 @@ export class TaskService {
     return this.http.post<Task>('/api/task', newTask);
   }
 
-  deleteTask(id: Task): Observable<Task>{
-    return this.http.delete<Task>('/api/task/'+id);
+  deleteTask(task: Task): Observable<Task>{
+    return this.http.delete<Task>('/api/task/'+task._id);
   }
 
   updateStatus(task: Task): Observable<Task>{

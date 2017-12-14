@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from "@angular/common/http";
 import {FormsModule} from '@angular/forms';
 import { AppComponent } from './app.component';
-import { TasksComponent } from './tasks/tasks.component';
+import { TasksComponent, DialogDataExampleDialog } from './tasks/tasks.component';
 import { TaskService } from './services/task.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MaterialModule } from './Material/material.module';
@@ -14,7 +14,11 @@ import { ReactiveFormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     TasksComponent,
+    DialogDataExampleDialog,
     NavigationComponent
+  ],
+  entryComponents: [
+    DialogDataExampleDialog,
   ],
   imports: [
     BrowserModule,
@@ -22,7 +26,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     BrowserAnimationsModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [TaskService],
   bootstrap: [AppComponent]

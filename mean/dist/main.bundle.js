@@ -37,8 +37,8 @@ var MaterialModule = (function () {
     }
     MaterialModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["H" /* NgModule */])({
-            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_material__["a" /* MatButtonModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["c" /* MatCheckboxModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["i" /* MatToolbarModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["e" /* MatInputModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["b" /* MatCardModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["g" /* MatProgressSpinnerModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["d" /* MatDatepickerModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["f" /* MatNativeDateModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["h" /* MatSelectModule */]],
-            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_material__["a" /* MatButtonModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["c" /* MatCheckboxModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["i" /* MatToolbarModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["e" /* MatInputModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["b" /* MatCardModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["g" /* MatProgressSpinnerModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["d" /* MatDatepickerModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["f" /* MatNativeDateModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["h" /* MatSelectModule */]],
+            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_material__["b" /* MatButtonModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["d" /* MatCheckboxModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["l" /* MatToolbarModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["h" /* MatInputModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["c" /* MatCardModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["j" /* MatProgressSpinnerModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["e" /* MatDatepickerModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["i" /* MatNativeDateModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["k" /* MatSelectModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["g" /* MatDialogModule */]],
+            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_material__["b" /* MatButtonModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["d" /* MatCheckboxModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["l" /* MatToolbarModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["h" /* MatInputModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["c" /* MatCardModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["j" /* MatProgressSpinnerModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["e" /* MatDatepickerModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["i" /* MatNativeDateModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["k" /* MatSelectModule */], __WEBPACK_IMPORTED_MODULE_1__angular_material__["g" /* MatDialogModule */]],
         })
     ], MaterialModule);
     return MaterialModule;
@@ -143,8 +143,12 @@ var AppModule = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["H" /* NgModule */])({
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */],
-                __WEBPACK_IMPORTED_MODULE_5__tasks_tasks_component__["a" /* TasksComponent */],
+                __WEBPACK_IMPORTED_MODULE_5__tasks_tasks_component__["b" /* TasksComponent */],
+                __WEBPACK_IMPORTED_MODULE_5__tasks_tasks_component__["a" /* DialogDataExampleDialog */],
                 __WEBPACK_IMPORTED_MODULE_9__navigation_navigation_component__["a" /* NavigationComponent */]
+            ],
+            entryComponents: [
+                __WEBPACK_IMPORTED_MODULE_5__tasks_tasks_component__["a" /* DialogDataExampleDialog */],
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -152,7 +156,7 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_3__angular_forms__["e" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_7__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
                 __WEBPACK_IMPORTED_MODULE_8__Material_material_module__["a" /* MaterialModule */],
-                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["j" /* ReactiveFormsModule */]
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["j" /* ReactiveFormsModule */],
             ],
             providers: [__WEBPACK_IMPORTED_MODULE_6__services_task_service__["a" /* TaskService */]],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]]
@@ -255,8 +259,8 @@ var TaskService = (function () {
     TaskService.prototype.addTask = function (newTask) {
         return this.http.post('/api/task', newTask);
     };
-    TaskService.prototype.deleteTask = function (id) {
-        return this.http.delete('/api/task/' + id);
+    TaskService.prototype.deleteTask = function (task) {
+        return this.http.delete('/api/task/' + task._id);
     };
     TaskService.prototype.updateStatus = function (task) {
         return this.http.put('/api/task/' + task._id, task);
@@ -272,10 +276,17 @@ var TaskService = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/tasks/dialog-data-example-dialog.html":
+/***/ (function(module, exports) {
+
+module.exports = "<h1 mat-dialog-title>Task deleted</h1>\r\n<div mat-dialog-content>\r\n    Task \"{{data.task}}\" was deleted successfully!\r\n</div>"
+
+/***/ }),
+
 /***/ "../../../../../src/app/tasks/tasks.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n    <div class=\"example-container\">\n        <form novalidate [formGroup]=\"myform\" (submit)=\"addTask($event)\">\n            <mat-form-field class=\"example-full-width\">\n                <input matInput formControlName=\"title\" placeholder=\"Add Task...\">\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <textarea matInput formControlName=\"description\" placeholder=\"Description...\" matTextareaAutosize matAutosizeMinRows=\"1\"\n                          matAutosizeMaxRows=\"3\"></textarea>\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <input matInput formControlName=\"deadline\" [matDatepicker]=\"picker\" placeholder=\"Choose a deadline\">\n                <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                <mat-datepicker touchUi=\"true\" #picker></mat-datepicker>\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <mat-select placeholder=\"Task status\" disableRipple formControlName=\"status\">\n                    <mat-option class=\"to-do\" value=\"To Do\">To Do</mat-option>\n                    <mat-option class=\"in-progress\" value=\"In Progress\">In Progress</mat-option>\n                    <mat-option class=\"completed\" value=\"Completed\">Completed</mat-option>\n                </mat-select>\n            </mat-form-field>\n            <button class=\"float-right submit-btn\" type=\"submit\" mat-raised-button color=\"primary\">Submit</button>\n        </form>\n    </div>\n    <mat-card-content class=\"task-list\">\n        <div *ngFor=\"let task of tasks\">\n            <mat-card>\n                <div class=\"row\">\n                    <div class=\"col-md-1\">\n                        <mat-checkbox [checked]=\"task.isDone\" (click)=\"updateStatus(task)\"\n                                      color=\"primary\"></mat-checkbox>\n                    </div>\n                    <div class=\"col-md-5\">\n                        <h3 [class.to-do-title]=\"task.status == 'To Do'\" [class.in-progress-title]=\"task.status == 'In Progress'\" [class.completed-title]=\"task.status == 'Completed'\">{{task.title}}</h3>\n                        <h5>{{task.description}}</h5>\n                        <span class=\"font-italic\">Created at : {{task.createdDate}}</span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <span>Deadline : {{task.deadline}}</span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <span>Status : <span class=\"font-weight-bold\" [class.to-do-title]=\"task.status == 'To Do'\" [class.in-progress-title]=\"task.status == 'In Progress'\" [class.completed-title]=\"task.status == 'Completed'\">{{task.status}}</span></span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <button class=\"float-right\" (click)=\"deleteTask(task._id)\" mat-raised-button color=\"primary\">\n                            Delete\n                        </button>\n                    </div>\n                </div>\n            </mat-card>\n        </div>\n        <mat-card *ngIf=\"showSpinner\">\n            <mat-spinner [style.display]=\"showSpinner ? 'block' : 'none'\"></mat-spinner>\n        </mat-card>\n    </mat-card-content>\n</mat-card>\n\n\n<mat-card *ngIf=\"answerDisplay\">\n    <h1>{{ answerDisplay }}, you're damn right.</h1>\n</mat-card>\n"
+module.exports = "<mat-card>\n    <div class=\"example-container\">\n        <form novalidate [formGroup]=\"myform\" (submit)=\"addTask($event)\">\n            <mat-form-field class=\"example-full-width\">\n                <input matInput formControlName=\"title\" placeholder=\"Add Task...\">\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <textarea matInput formControlName=\"description\" placeholder=\"Description...\" matTextareaAutosize matAutosizeMinRows=\"1\"\n                          matAutosizeMaxRows=\"3\"></textarea>\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <input matInput formControlName=\"deadline\" [matDatepicker]=\"picker\" placeholder=\"Choose a deadline\">\n                <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                <mat-datepicker touchUi=\"true\" #picker></mat-datepicker>\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <mat-select placeholder=\"Task status\" disableRipple formControlName=\"status\">\n                    <mat-option class=\"to-do\" value=\"To Do\">To Do</mat-option>\n                    <mat-option class=\"in-progress\" value=\"In Progress\">In Progress</mat-option>\n                    <mat-option class=\"completed\" value=\"Completed\">Completed</mat-option>\n                </mat-select>\n            </mat-form-field>\n            <button class=\"float-right submit-btn\" type=\"submit\" mat-raised-button color=\"primary\">Submit</button>\n        </form>\n    </div>\n    <mat-card-content class=\"task-list\">\n        <div *ngFor=\"let task of tasks\">\n            <mat-card>\n                <div class=\"row\">\n                    <div class=\"col-md-1\">\n                        <mat-checkbox [checked]=\"task.isDone\" (click)=\"updateStatus(task)\"\n                                      color=\"primary\"></mat-checkbox>\n                    </div>\n                    <div class=\"col-md-5\">\n                        <h3 [class.to-do-title]=\"task.status == 'To Do'\" [class.in-progress-title]=\"task.status == 'In Progress'\" [class.completed-title]=\"task.status == 'Completed'\">{{task.title}}</h3>\n                        <h5>{{task.description}}</h5>\n                        <span class=\"font-italic\">Created at : {{task.createdDate}}</span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <span>Deadline : {{task.deadline}}</span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <span>Status : <span class=\"font-weight-bold\" [class.to-do-title]=\"task.status == 'To Do'\" [class.in-progress-title]=\"task.status == 'In Progress'\" [class.completed-title]=\"task.status == 'Completed'\">{{task.status}}</span></span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <button class=\"float-right\" (click)=\"deleteTask(task)\" mat-raised-button color=\"primary\">\n                            Delete\n                        </button>\n                    </div>\n                </div>\n            </mat-card>\n        </div>\n        <mat-card *ngIf=\"showSpinner\">\n            <mat-spinner [style.display]=\"showSpinner ? 'block' : 'none'\"></mat-spinner>\n        </mat-card>\n    </mat-card-content>\n</mat-card>\n\n\n<mat-card *ngIf=\"answerDisplay\">\n    <h1>{{ answerDisplay }}, you're damn right.</h1>\n</mat-card>\n"
 
 /***/ }),
 
@@ -301,10 +312,12 @@ module.exports = module.exports.toString();
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TasksComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return TasksComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DialogDataExampleDialog; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_task_service__ = __webpack_require__("../../../../../src/app/services/task.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -314,13 +327,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
 
 
 
 var TasksComponent = (function () {
-    function TasksComponent(taskService) {
+    function TasksComponent(taskService, dialog) {
         var _this = this;
         this.taskService = taskService;
+        this.dialog = dialog;
         this.answer = '';
         this.answerDisplay = '';
         this.showSpinner = false;
@@ -361,16 +379,21 @@ var TasksComponent = (function () {
                 _this.myform.value.description = '';
                 _this.myform.value.deadline = '';
                 _this.myform.value.status = '';
-                console.log(_this.myform.value.status);
             });
         }, 1000);
     };
-    TasksComponent.prototype.deleteTask = function (id) {
+    TasksComponent.prototype.deleteTask = function (task) {
+        var _this = this;
         var tasks = this.tasks;
-        this.taskService.deleteTask(id).subscribe(function (data) {
+        this.taskService.deleteTask(task).subscribe(function (data) {
             for (var i = 0; i < tasks.length; i++) {
-                if (tasks[i]._id == id) {
+                if (tasks[i]._id == task._id) {
                     tasks.splice(i, 1);
+                    _this.dialog.open(DialogDataExampleDialog, {
+                        data: {
+                            task: task.title
+                        }
+                    });
                 }
             }
         });
@@ -403,9 +426,24 @@ var TasksComponent = (function () {
             template: __webpack_require__("../../../../../src/app/tasks/tasks.component.html"),
             styles: [__webpack_require__("../../../../../src/app/tasks/tasks.component.scss")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_task_service__["a" /* TaskService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_task_service__["a" /* TaskService */], __WEBPACK_IMPORTED_MODULE_3__angular_material__["f" /* MatDialog */]])
     ], TasksComponent);
     return TasksComponent;
+}());
+
+var DialogDataExampleDialog = (function () {
+    function DialogDataExampleDialog(data) {
+        this.data = data;
+    }
+    DialogDataExampleDialog = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'dialog-data-example-dialog',
+            template: __webpack_require__("../../../../../src/app/tasks/dialog-data-example-dialog.html"),
+        }),
+        __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["y" /* Inject */])(__WEBPACK_IMPORTED_MODULE_3__angular_material__["a" /* MAT_DIALOG_DATA */])),
+        __metadata("design:paramtypes", [Object])
+    ], DialogDataExampleDialog);
+    return DialogDataExampleDialog;
 }());
 
 
