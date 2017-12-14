@@ -1,0 +1,62 @@
+<mat-card>
+    <div class="example-container">
+        <form novalidate [formGroup]="myform" (submit)="addTask($event)">
+            <mat-form-field class="example-full-width">
+                <input matInput formControlName="title" placeholder="Add Task...">
+            </mat-form-field>
+            <mat-form-field class="example-half-width">
+                <textarea matInput formControlName="description" placeholder="Description..." matTextareaAutosize matAutosizeMinRows="1"
+                          matAutosizeMaxRows="3"></textarea>
+            </mat-form-field>
+            <mat-form-field class="example-half-width">
+                <input matInput formControlName="deadline" [matDatepicker]="picker" placeholder="Choose a deadline">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi="true" #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="example-half-width">
+                <mat-select placeholder="Task status" disableRipple formControlName="status">
+                    <mat-option class="to-do" value="To Do">To Do</mat-option>
+                    <mat-option class="in-progress" value="In Progress">In Progress</mat-option>
+                    <mat-option class="completed" value="Completed">Completed</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button class="float-right submit-btn" type="submit" mat-raised-button color="primary">Submit</button>
+        </form>
+    </div>
+    <mat-card-content class="task-list">
+        <div *ngFor="let task of tasks">
+            <mat-card>
+                <div class="row">
+                    <div class="col-md-1">
+                        <mat-checkbox [checked]="task.isDone" (click)="updateStatus(task)"
+                                      color="primary"></mat-checkbox>
+                    </div>
+                    <div class="col-md-5">
+                        <h3 [class.to-do-title]="task.status == 'To Do'" [class.in-progress-title]="task.status == 'In Progress'" [class.completed-title]="task.status == 'Completed'">{{task.title}}</h3>
+                        <h5>{{task.description}}</h5>
+                        <span class="font-italic">Created at : {{task.createdDate}}</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span>Deadline : {{task.deadline}}</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span>Status : <span class="font-weight-bold" [class.to-do-title]="task.status == 'To Do'" [class.in-progress-title]="task.status == 'In Progress'" [class.completed-title]="task.status == 'Completed'">{{task.status}}</span></span>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="float-right" (click)="deleteTask(task._id)" mat-raised-button color="primary">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+        <mat-card *ngIf="showSpinner">
+            <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+        </mat-card>
+    </mat-card-content>
+</mat-card>
+
+
+<mat-card *ngIf="answerDisplay">
+    <h1>{{ answerDisplay }}, you're damn right.</h1>
+</mat-card>
