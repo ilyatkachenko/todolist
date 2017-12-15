@@ -1,4 +1,9 @@
 <h1 mat-dialog-title>Task deleted</h1>
 <div mat-dialog-content>
-    Task "{{data.task}}" was deleted successfully!
+    <div *ngIf="data.task">Task "{{data.task}}" was deleted successfully!</div>
+    <div *ngIf="data.tasks">
+        <div *ngFor="let task of data.tasks">
+            Task "{{task.title}}" was deleted successfully!
+        </div>
+    </div>
 </div>

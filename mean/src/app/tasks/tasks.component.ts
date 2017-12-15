@@ -13,14 +13,16 @@ export class TasksComponent implements OnInit {
     tasks: Task[];
     title: string;
     answer: string = '';
-    answerDisplay: string = '';
     showSpinner: boolean = false;
     myform: FormGroup;
+    priorities: number[] = [1,2,3,4,5,6,7,8,9,10];
+    checked: boolean = false;
 
     constructor(private taskService: TaskService, public dialog: MatDialog) {
         this.taskService.getTasks()
             .subscribe(tasks => {
                 this.tasks = tasks;
+                this.checking();
             });
     }
 
@@ -46,7 +48,8 @@ export class TasksComponent implements OnInit {
             isDone: false,
             createdDate: currDate,
             deadline: dlDate,
-            status: this.myform.value.status
+            status: this.myform.value.status,
+            priority: this.myform.value.priority
         };
 
         this.showSpinner = true;
@@ -57,6 +60,7 @@ export class TasksComponent implements OnInit {
             this.taskService.addTask(newTask)
                 .subscribe(task => {
                     this.tasks.push(task);
+                    console.log(this.myform.value.title);
                     this.myform.value.title = '';
                     this.myform.value.description = '';
                     this.myform.value.deadline = '';
@@ -83,6 +87,32 @@ export class TasksComponent implements OnInit {
         });
     }
 
+    deleteAll() {
+        let tasks = this.tasks;
+
+        let tasksDone = tasks.filter(function (task) {
+            return task.isDone == true;
+        });
+
+        for (let i = 0; i < tasksDone.length; i++) {
+            this.taskService.deleteTask(tasksDone[i]).subscribe(data => {
+                for (let j = 0; j < tasks.length; j++) {
+                    if (tasks[j]._id == tasksDone[i]._id) {
+                        tasks.splice(j, 1);
+                    }
+                }
+            });
+        }
+
+        this.checking();
+        
+        this.dialog.open(DialogDataExampleDialog, {
+            data: {
+                tasks: tasksDone
+            }
+        });
+    }
+
     updateStatus(task) {
         let _task = {
             _id: task._id,
@@ -91,12 +121,21 @@ export class TasksComponent implements OnInit {
             description: task.description,
             createdDate: task.createdDate,
             deadline: task.deadline,
-            status: task.status
+            status: task.status,
+            priority: task.priority
         };
 
         this.taskService.updateStatus(_task).subscribe(data => {
             task.isDone = !task.isDone;
+            this.checking();
         });
+    }
+
+    checking(){
+        let tasks = this.tasks;
+
+        let tasksDone = tasks.filter(task => task.isDone == true);
+        tasksDone.length != 0 ? this.checked = true : this.checked = false;
     }
 
     ngOnInit() {
@@ -105,6 +144,7 @@ export class TasksComponent implements OnInit {
             description: new FormControl('', Validators.required),
             deadline: new FormControl('', Validators.required),
             status: new FormControl('', Validators.required),
+            priority: new FormControl('', Validators.required),
         }, {updateOn: 'submit'});
     }
 }

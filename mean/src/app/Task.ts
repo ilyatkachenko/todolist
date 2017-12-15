@@ -6,4 +6,5 @@ export class Task{
     createdDate: string;
     deadline: string;
     status: string;
+    priority: number;
 }

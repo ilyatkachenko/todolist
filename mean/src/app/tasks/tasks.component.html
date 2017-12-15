@@ -20,6 +20,13 @@
                     <mat-option class="completed" value="Completed">Completed</mat-option>
                 </mat-select>
             </mat-form-field>
+            <mat-form-field class="example-half-width">
+                <mat-select placeholder="Task priority" disableRipple formControlName="priority">
+                    <div *ngFor="let priority of priorities">
+                        <mat-option value="{{priority}}">{{priority}}</mat-option>
+                    </div>
+                </mat-select>
+            </mat-form-field>
             <button class="float-right submit-btn" type="submit" mat-raised-button color="primary">Submit</button>
         </form>
     </div>
@@ -40,7 +47,8 @@
                         <span>Deadline : {{task.deadline}}</span>
                     </div>
                     <div class="col-md-2">
-                        <span>Status : <span class="font-weight-bold" [class.to-do-title]="task.status == 'To Do'" [class.in-progress-title]="task.status == 'In Progress'" [class.completed-title]="task.status == 'Completed'">{{task.status}}</span></span>
+                        <p>Status : <span class="font-weight-bold" [class.to-do-title]="task.status == 'To Do'" [class.in-progress-title]="task.status == 'In Progress'" [class.completed-title]="task.status == 'Completed'">{{task.status}}</span></p>
+                        <p>Priority : <span class="font-weight-bold">{{task.priority}}</span></p>
                     </div>
                     <div class="col-md-2">
                         <button class="float-right" (click)="deleteTask(task)" mat-raised-button color="primary">
@@ -54,9 +62,7 @@
             <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
         </mat-card>
     </mat-card-content>
-</mat-card>
-
-
-<mat-card *ngIf="answerDisplay">
-    <h1>{{ answerDisplay }}, you're damn right.</h1>
+    <div *ngIf="checked">
+        <button class="delete-all" (click)="deleteAll()" mat-raised-button color="primary">Delete selected</button>
+    </div>
 </mat-card>

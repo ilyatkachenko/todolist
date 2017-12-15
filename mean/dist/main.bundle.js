@@ -279,14 +279,14 @@ var TaskService = (function () {
 /***/ "../../../../../src/app/tasks/dialog-data-example-dialog.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1 mat-dialog-title>Task deleted</h1>\r\n<div mat-dialog-content>\r\n    Task \"{{data.task}}\" was deleted successfully!\r\n</div>"
+module.exports = "<h1 mat-dialog-title>Task deleted</h1>\r\n<div mat-dialog-content>\r\n    <div *ngIf=\"data.task\">Task \"{{data.task}}\" was deleted successfully!</div>\r\n    <div *ngIf=\"data.tasks\">\r\n        <div *ngFor=\"let task of data.tasks\">\r\n            Task \"{{task.title}}\" was deleted successfully!\r\n        </div>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
 /***/ "../../../../../src/app/tasks/tasks.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n    <div class=\"example-container\">\n        <form novalidate [formGroup]=\"myform\" (submit)=\"addTask($event)\">\n            <mat-form-field class=\"example-full-width\">\n                <input matInput formControlName=\"title\" placeholder=\"Add Task...\">\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <textarea matInput formControlName=\"description\" placeholder=\"Description...\" matTextareaAutosize matAutosizeMinRows=\"1\"\n                          matAutosizeMaxRows=\"3\"></textarea>\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <input matInput formControlName=\"deadline\" [matDatepicker]=\"picker\" placeholder=\"Choose a deadline\">\n                <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                <mat-datepicker touchUi=\"true\" #picker></mat-datepicker>\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <mat-select placeholder=\"Task status\" disableRipple formControlName=\"status\">\n                    <mat-option class=\"to-do\" value=\"To Do\">To Do</mat-option>\n                    <mat-option class=\"in-progress\" value=\"In Progress\">In Progress</mat-option>\n                    <mat-option class=\"completed\" value=\"Completed\">Completed</mat-option>\n                </mat-select>\n            </mat-form-field>\n            <button class=\"float-right submit-btn\" type=\"submit\" mat-raised-button color=\"primary\">Submit</button>\n        </form>\n    </div>\n    <mat-card-content class=\"task-list\">\n        <div *ngFor=\"let task of tasks\">\n            <mat-card>\n                <div class=\"row\">\n                    <div class=\"col-md-1\">\n                        <mat-checkbox [checked]=\"task.isDone\" (click)=\"updateStatus(task)\"\n                                      color=\"primary\"></mat-checkbox>\n                    </div>\n                    <div class=\"col-md-5\">\n                        <h3 [class.to-do-title]=\"task.status == 'To Do'\" [class.in-progress-title]=\"task.status == 'In Progress'\" [class.completed-title]=\"task.status == 'Completed'\">{{task.title}}</h3>\n                        <h5>{{task.description}}</h5>\n                        <span class=\"font-italic\">Created at : {{task.createdDate}}</span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <span>Deadline : {{task.deadline}}</span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <span>Status : <span class=\"font-weight-bold\" [class.to-do-title]=\"task.status == 'To Do'\" [class.in-progress-title]=\"task.status == 'In Progress'\" [class.completed-title]=\"task.status == 'Completed'\">{{task.status}}</span></span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <button class=\"float-right\" (click)=\"deleteTask(task)\" mat-raised-button color=\"primary\">\n                            Delete\n                        </button>\n                    </div>\n                </div>\n            </mat-card>\n        </div>\n        <mat-card *ngIf=\"showSpinner\">\n            <mat-spinner [style.display]=\"showSpinner ? 'block' : 'none'\"></mat-spinner>\n        </mat-card>\n    </mat-card-content>\n</mat-card>\n\n\n<mat-card *ngIf=\"answerDisplay\">\n    <h1>{{ answerDisplay }}, you're damn right.</h1>\n</mat-card>\n"
+module.exports = "<mat-card>\n    <div class=\"example-container\">\n        <form novalidate [formGroup]=\"myform\" (submit)=\"addTask($event)\">\n            <mat-form-field class=\"example-full-width\">\n                <input matInput formControlName=\"title\" placeholder=\"Add Task...\">\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <textarea matInput formControlName=\"description\" placeholder=\"Description...\" matTextareaAutosize matAutosizeMinRows=\"1\"\n                          matAutosizeMaxRows=\"3\"></textarea>\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <input matInput formControlName=\"deadline\" [matDatepicker]=\"picker\" placeholder=\"Choose a deadline\">\n                <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                <mat-datepicker touchUi=\"true\" #picker></mat-datepicker>\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <mat-select placeholder=\"Task status\" disableRipple formControlName=\"status\">\n                    <mat-option class=\"to-do\" value=\"To Do\">To Do</mat-option>\n                    <mat-option class=\"in-progress\" value=\"In Progress\">In Progress</mat-option>\n                    <mat-option class=\"completed\" value=\"Completed\">Completed</mat-option>\n                </mat-select>\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <mat-select placeholder=\"Task priority\" disableRipple formControlName=\"priority\">\n                    <div *ngFor=\"let priority of priorities\">\n                        <mat-option value=\"{{priority}}\">{{priority}}</mat-option>\n                    </div>\n                </mat-select>\n            </mat-form-field>\n            <button class=\"float-right submit-btn\" type=\"submit\" mat-raised-button color=\"primary\">Submit</button>\n        </form>\n    </div>\n    <mat-card-content class=\"task-list\">\n        <div *ngFor=\"let task of tasks\">\n            <mat-card>\n                <div class=\"row\">\n                    <div class=\"col-md-1\">\n                        <mat-checkbox [checked]=\"task.isDone\" (click)=\"updateStatus(task)\"\n                                      color=\"primary\"></mat-checkbox>\n                    </div>\n                    <div class=\"col-md-5\">\n                        <h3 [class.to-do-title]=\"task.status == 'To Do'\" [class.in-progress-title]=\"task.status == 'In Progress'\" [class.completed-title]=\"task.status == 'Completed'\">{{task.title}}</h3>\n                        <h5>{{task.description}}</h5>\n                        <span class=\"font-italic\">Created at : {{task.createdDate}}</span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <span>Deadline : {{task.deadline}}</span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <p>Status : <span class=\"font-weight-bold\" [class.to-do-title]=\"task.status == 'To Do'\" [class.in-progress-title]=\"task.status == 'In Progress'\" [class.completed-title]=\"task.status == 'Completed'\">{{task.status}}</span></p>\n                        <p>Priority : <span class=\"font-weight-bold\">{{task.priority}}</span></p>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <button class=\"float-right\" (click)=\"deleteTask(task)\" mat-raised-button color=\"primary\">\n                            Delete\n                        </button>\n                    </div>\n                </div>\n            </mat-card>\n        </div>\n        <mat-card *ngIf=\"showSpinner\">\n            <mat-spinner [style.display]=\"showSpinner ? 'block' : 'none'\"></mat-spinner>\n        </mat-card>\n    </mat-card-content>\n    <div *ngIf=\"checked\">\n        <button class=\"delete-all\" (click)=\"deleteAll()\" mat-raised-button color=\"primary\">Delete selected</button>\n    </div>\n</mat-card>\n"
 
 /***/ }),
 
@@ -298,7 +298,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".example-container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column; }\n\n.example-container > * {\n  width: 100%; }\n\n.example-full-width {\n  width: 100%; }\n\n.example-half-width {\n  width: 50%; }\n\n.task-list {\n  margin-top: 20px; }\n\n.submit-btn {\n  min-width: 300px; }\n\n.to-do {\n  background-color: #fffe82 !important;\n  font-weight: bold;\n  color: #000 !important; }\n  .to-do:hover {\n    background-color: rgba(255, 254, 130, 0.45) !important; }\n\n.in-progress {\n  background-color: #44afff !important;\n  font-weight: bold;\n  color: #000 !important; }\n  .in-progress:hover {\n    background-color: rgba(68, 175, 255, 0.51) !important; }\n\n.completed {\n  background-color: #44ff78 !important;\n  font-weight: bold;\n  color: #000 !important; }\n  .completed:hover {\n    background-color: rgba(68, 255, 120, 0.48) !important; }\n\n.to-do-title {\n  color: #ffc900; }\n\n.in-progress-title {\n  color: #44afff; }\n\n.completed-title {\n  color: #00d32b; }\n", ""]);
+exports.push([module.i, ".example-container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column; }\n\n.example-container > * {\n  width: 100%; }\n\n.example-full-width {\n  width: 100%; }\n\n.example-half-width {\n  width: 48%; }\n  .example-half-width:nth-of-type(2n) {\n    margin-right: 3.5%; }\n\n.task-list {\n  margin-top: 20px; }\n\n.submit-btn {\n  min-width: 300px; }\n\n.to-do {\n  background-color: #fffe82 !important;\n  font-weight: bold;\n  color: #000 !important; }\n  .to-do:hover {\n    background-color: rgba(255, 254, 130, 0.45) !important; }\n\n.in-progress {\n  background-color: #44afff !important;\n  font-weight: bold;\n  color: #000 !important; }\n  .in-progress:hover {\n    background-color: rgba(68, 175, 255, 0.51) !important; }\n\n.completed {\n  background-color: #44ff78 !important;\n  font-weight: bold;\n  color: #000 !important; }\n  .completed:hover {\n    background-color: rgba(68, 255, 120, 0.48) !important; }\n\n.to-do-title {\n  color: #ffc900; }\n\n.in-progress-title {\n  color: #44afff; }\n\n.completed-title {\n  color: #00d32b; }\n\n.delete-all {\n  margin: 20px 0; }\n", ""]);
 
 // exports
 
@@ -340,11 +340,13 @@ var TasksComponent = (function () {
         this.taskService = taskService;
         this.dialog = dialog;
         this.answer = '';
-        this.answerDisplay = '';
         this.showSpinner = false;
+        this.priorities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        this.checked = false;
         this.taskService.getTasks()
             .subscribe(function (tasks) {
             _this.tasks = tasks;
+            _this.checking();
         });
     }
     TasksComponent.prototype.addTask = function (event) {
@@ -367,7 +369,8 @@ var TasksComponent = (function () {
             isDone: false,
             createdDate: currDate,
             deadline: dlDate,
-            status: this.myform.value.status
+            status: this.myform.value.status,
+            priority: this.myform.value.priority
         };
         this.showSpinner = true;
         setTimeout(function () {
@@ -375,6 +378,7 @@ var TasksComponent = (function () {
             _this.taskService.addTask(newTask)
                 .subscribe(function (task) {
                 _this.tasks.push(task);
+                console.log(_this.myform.value.title);
                 _this.myform.value.title = '';
                 _this.myform.value.description = '';
                 _this.myform.value.deadline = '';
@@ -398,7 +402,33 @@ var TasksComponent = (function () {
             }
         });
     };
+    TasksComponent.prototype.deleteAll = function () {
+        var tasks = this.tasks;
+        var tasksDone = tasks.filter(function (task) {
+            return task.isDone == true;
+        });
+        var _loop_1 = function (i) {
+            this_1.taskService.deleteTask(tasksDone[i]).subscribe(function (data) {
+                for (var j = 0; j < tasks.length; j++) {
+                    if (tasks[j]._id == tasksDone[i]._id) {
+                        tasks.splice(j, 1);
+                    }
+                }
+            });
+        };
+        var this_1 = this;
+        for (var i = 0; i < tasksDone.length; i++) {
+            _loop_1(i);
+        }
+        this.checking();
+        this.dialog.open(DialogDataExampleDialog, {
+            data: {
+                tasks: tasksDone
+            }
+        });
+    };
     TasksComponent.prototype.updateStatus = function (task) {
+        var _this = this;
         var _task = {
             _id: task._id,
             title: task.title,
@@ -406,11 +436,18 @@ var TasksComponent = (function () {
             description: task.description,
             createdDate: task.createdDate,
             deadline: task.deadline,
-            status: task.status
+            status: task.status,
+            priority: task.priority
         };
         this.taskService.updateStatus(_task).subscribe(function (data) {
             task.isDone = !task.isDone;
+            _this.checking();
         });
+    };
+    TasksComponent.prototype.checking = function () {
+        var tasks = this.tasks;
+        var tasksDone = tasks.filter(function (task) { return task.isDone == true; });
+        tasksDone.length != 0 ? this.checked = true : this.checked = false;
     };
     TasksComponent.prototype.ngOnInit = function () {
         this.myform = new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["c" /* FormGroup */]({
@@ -418,6 +455,7 @@ var TasksComponent = (function () {
             description: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["k" /* Validators */].required),
             deadline: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["k" /* Validators */].required),
             status: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["k" /* Validators */].required),
+            priority: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["k" /* Validators */].required),
         }, { updateOn: 'submit' });
     };
     TasksComponent = __decorate([
