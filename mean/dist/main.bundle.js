@@ -119,12 +119,14 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/esm5/animations.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Material_material_module__ = __webpack_require__("../../../../../src/app/Material/material.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__navigation_navigation_component__ = __webpack_require__("../../../../../src/app/navigation/navigation.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pipes_filter_status_pipe__ = __webpack_require__("../../../../../src/app/pipes/filter-status.pipe.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -145,7 +147,8 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */],
                 __WEBPACK_IMPORTED_MODULE_5__tasks_tasks_component__["b" /* TasksComponent */],
                 __WEBPACK_IMPORTED_MODULE_5__tasks_tasks_component__["a" /* DialogDataExampleDialog */],
-                __WEBPACK_IMPORTED_MODULE_9__navigation_navigation_component__["a" /* NavigationComponent */]
+                __WEBPACK_IMPORTED_MODULE_9__navigation_navigation_component__["a" /* NavigationComponent */],
+                __WEBPACK_IMPORTED_MODULE_10__pipes_filter_status_pipe__["a" /* FilterStatusPipe */]
             ],
             entryComponents: [
                 __WEBPACK_IMPORTED_MODULE_5__tasks_tasks_component__["a" /* DialogDataExampleDialog */],
@@ -230,6 +233,37 @@ var NavigationComponent = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/pipes/filter-status.pipe.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FilterStatusPipe; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var FilterStatusPipe = (function () {
+    function FilterStatusPipe() {
+    }
+    FilterStatusPipe.prototype.transform = function (items, status) {
+        return status ? items.filter(function (stat) { return stat.status === status; }) : items;
+    };
+    FilterStatusPipe = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["R" /* Pipe */])({
+            name: 'filterStatus'
+        })
+    ], FilterStatusPipe);
+    return FilterStatusPipe;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/services/task.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -286,7 +320,7 @@ module.exports = "<h1 mat-dialog-title>Task deleted</h1>\r\n<div mat-dialog-cont
 /***/ "../../../../../src/app/tasks/tasks.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n    <div class=\"example-container\">\n        <form novalidate [formGroup]=\"myform\" (submit)=\"addTask($event)\">\n            <mat-form-field class=\"example-full-width\">\n                <input matInput formControlName=\"title\" placeholder=\"Add Task...\">\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <textarea matInput formControlName=\"description\" placeholder=\"Description...\" matTextareaAutosize matAutosizeMinRows=\"1\"\n                          matAutosizeMaxRows=\"3\"></textarea>\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <input matInput formControlName=\"deadline\" [matDatepicker]=\"picker\" placeholder=\"Choose a deadline\">\n                <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                <mat-datepicker touchUi=\"true\" #picker></mat-datepicker>\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <mat-select placeholder=\"Task status\" disableRipple formControlName=\"status\">\n                    <mat-option class=\"to-do\" value=\"To Do\">To Do</mat-option>\n                    <mat-option class=\"in-progress\" value=\"In Progress\">In Progress</mat-option>\n                    <mat-option class=\"completed\" value=\"Completed\">Completed</mat-option>\n                </mat-select>\n            </mat-form-field>\n            <mat-form-field class=\"example-half-width\">\n                <mat-select placeholder=\"Task priority\" disableRipple formControlName=\"priority\">\n                    <div *ngFor=\"let priority of priorities\">\n                        <mat-option value=\"{{priority}}\">{{priority}}</mat-option>\n                    </div>\n                </mat-select>\n            </mat-form-field>\n            <button class=\"float-right submit-btn\" type=\"submit\" mat-raised-button color=\"primary\">Submit</button>\n        </form>\n    </div>\n    <mat-card-content class=\"task-list\">\n        <div *ngFor=\"let task of tasks\">\n            <mat-card>\n                <div class=\"row\">\n                    <div class=\"col-md-1\">\n                        <mat-checkbox [checked]=\"task.isDone\" (click)=\"updateStatus(task)\"\n                                      color=\"primary\"></mat-checkbox>\n                    </div>\n                    <div class=\"col-md-5\">\n                        <h3 [class.to-do-title]=\"task.status == 'To Do'\" [class.in-progress-title]=\"task.status == 'In Progress'\" [class.completed-title]=\"task.status == 'Completed'\">{{task.title}}</h3>\n                        <h5>{{task.description}}</h5>\n                        <span class=\"font-italic\">Created at : {{task.createdDate}}</span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <span>Deadline : {{task.deadline}}</span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <p>Status : <span class=\"font-weight-bold\" [class.to-do-title]=\"task.status == 'To Do'\" [class.in-progress-title]=\"task.status == 'In Progress'\" [class.completed-title]=\"task.status == 'Completed'\">{{task.status}}</span></p>\n                        <p>Priority : <span class=\"font-weight-bold\">{{task.priority}}</span></p>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <button class=\"float-right\" (click)=\"deleteTask(task)\" mat-raised-button color=\"primary\">\n                            Delete\n                        </button>\n                    </div>\n                </div>\n            </mat-card>\n        </div>\n        <mat-card *ngIf=\"showSpinner\">\n            <mat-spinner [style.display]=\"showSpinner ? 'block' : 'none'\"></mat-spinner>\n        </mat-card>\n    </mat-card-content>\n    <div *ngIf=\"checked\">\n        <button class=\"delete-all\" (click)=\"deleteAll()\" mat-raised-button color=\"primary\">Delete selected</button>\n    </div>\n</mat-card>\n"
+module.exports = "<mat-card>\n    <mat-card>\n        <div class=\"example-container\">\n            <h2>New task :</h2>\n            <form novalidate [formGroup]=\"myform\" (submit)=\"addTask($event)\">\n                <mat-form-field class=\"example-full-width\">\n                    <input matInput formControlName=\"title\" placeholder=\"Add Task...\">\n                </mat-form-field>\n                <mat-form-field class=\"example-half-width\">\n                    <textarea matInput formControlName=\"description\" placeholder=\"Description...\" matTextareaAutosize matAutosizeMinRows=\"1\"\n                                matAutosizeMaxRows=\"3\"></textarea>\n                </mat-form-field>\n                <mat-form-field class=\"example-half-width\">\n                    <input matInput formControlName=\"deadline\" [matDatepicker]=\"picker\" placeholder=\"Choose a deadline\">\n                    <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                    <mat-datepicker touchUi=\"true\" #picker></mat-datepicker>\n                </mat-form-field>\n                <mat-form-field class=\"example-half-width\">\n                    <mat-select placeholder=\"Task status\" disableRipple formControlName=\"status\">\n                        <mat-option class=\"to-do\" value=\"To Do\">To Do</mat-option>\n                        <mat-option class=\"in-progress\" value=\"In Progress\">In Progress</mat-option>\n                        <mat-option class=\"completed\" value=\"Completed\">Completed</mat-option>\n                    </mat-select>\n                </mat-form-field>\n                <mat-form-field class=\"example-half-width\">\n                    <mat-select placeholder=\"Task priority\" disableRipple formControlName=\"priority\">\n                        <div *ngFor=\"let priority of priorities\">\n                            <mat-option value=\"{{priority}}\">{{priority}}</mat-option>\n                        </div>\n                    </mat-select>\n                </mat-form-field>\n                <button class=\"float-right submit-btn\" type=\"submit\" mat-raised-button color=\"primary\">Submit</button>\n            </form>\n        </div>\n    </mat-card>\n   <mat-card class=\"filter\">\n       <h2>Filter :</h2>\n       <mat-form-field class=\"example-half-width\">\n            <mat-select placeholder=\"Task status\" disableRipple [(ngModel)] = \"filterStatus\">\n                    <mat-option value=\"all\">Show all</mat-option>\n                <mat-option class=\"to-do\" value=\"To Do\">To Do</mat-option>\n                <mat-option class=\"in-progress\" value=\"In Progress\">In Progress</mat-option>\n                <mat-option class=\"completed\" value=\"Completed\">Completed</mat-option>\n            </mat-select>\n        </mat-form-field>\n   </mat-card>\n    <mat-card-content class=\"task-list\">\n        <div *ngFor=\"let task of tasks | filterStatus : filterStatus\">\n            <mat-card>\n                <div class=\"row\">\n                    <div class=\"col-md-1\">\n                        <mat-checkbox [checked]=\"task.isDone\" (click)=\"updateStatus(task)\"\n                                      color=\"primary\"></mat-checkbox>\n                    </div>\n                    <div class=\"col-md-5\">\n                        <h3 [class.to-do-title]=\"task.status == 'To Do'\" [class.in-progress-title]=\"task.status == 'In Progress'\" [class.completed-title]=\"task.status == 'Completed'\">{{task.title}}</h3>\n                        <h5>{{task.description}}</h5>\n                        <span class=\"font-italic\">Created at : {{task.createdDate | date : \"longDate\"}}</span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <span>Deadline : {{task.deadline | date : \"longDate\"}}</span>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <p>Status : <span class=\"font-weight-bold\" [class.to-do-title]=\"task.status == 'To Do'\" [class.in-progress-title]=\"task.status == 'In Progress'\" [class.completed-title]=\"task.status == 'Completed'\">{{task.status}}</span></p>\n                        <p>Priority : <span class=\"font-weight-bold\">{{task.priority}}</span></p>\n                    </div>\n                    <div class=\"col-md-2\">\n                        <button class=\"float-right\" (click)=\"deleteTask(task)\" mat-raised-button color=\"primary\">\n                            Delete\n                        </button>\n                    </div>\n                </div>\n            </mat-card>\n        </div>\n        <mat-card *ngIf=\"showSpinner\">\n            <mat-spinner [style.display]=\"showSpinner ? 'block' : 'none'\"></mat-spinner>\n        </mat-card>\n    </mat-card-content>\n    <div *ngIf=\"checked\">\n        <button class=\"delete-all\" (click)=\"deleteAll()\" mat-raised-button color=\"primary\">Delete selected</button>\n    </div>\n</mat-card>\n"
 
 /***/ }),
 
@@ -352,23 +386,23 @@ var TasksComponent = (function () {
     TasksComponent.prototype.addTask = function (event) {
         var _this = this;
         event.preventDefault();
-        var d = new Date();
-        var curr_date = d.getDate();
-        var curr_month = d.getMonth() + 1;
-        var curr_year = d.getFullYear();
-        var currDate = curr_month + "/" + curr_date + "/" + curr_year;
-        var dl = this.myform.value.deadline;
-        var dl_date = dl.getDate();
-        var dl_month = dl.getMonth() + 1;
-        var dl_year = dl.getFullYear();
-        var dlDate = dl_month + "/" + dl_date + "/" + dl_year;
+        // let d = new Date();
+        // let curr_date = d.getDate();
+        // let curr_month = d.getMonth() + 1;
+        // let curr_year = d.getFullYear();
+        // let currDate = curr_month + "/" + curr_date + "/" + curr_year;
+        // let dl = this.myform.value.deadline;
+        // let dl_date = dl.getDate();
+        // let dl_month = dl.getMonth() + 1;
+        // let dl_year = dl.getFullYear();
+        // let dlDate = dl_month + "/" + dl_date + "/" + dl_year;
         var newTask = {
             _id: '',
             title: this.myform.value.title,
             description: this.myform.value.description,
             isDone: false,
-            createdDate: currDate,
-            deadline: dlDate,
+            createdDate: new Date(),
+            deadline: this.myform.value.deadline,
             status: this.myform.value.status,
             priority: this.myform.value.priority
         };
@@ -378,11 +412,6 @@ var TasksComponent = (function () {
             _this.taskService.addTask(newTask)
                 .subscribe(function (task) {
                 _this.tasks.push(task);
-                console.log(_this.myform.value.title);
-                _this.myform.value.title = '';
-                _this.myform.value.description = '';
-                _this.myform.value.deadline = '';
-                _this.myform.value.status = '';
             });
         }, 1000);
     };

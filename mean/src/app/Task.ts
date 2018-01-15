@@ -3,7 +3,7 @@ export class Task{
     title: string;
     isDone: boolean;
     description: string;
-    createdDate: string;
+    createdDate: Date;
     deadline: string;
     status: string;
     priority: number;

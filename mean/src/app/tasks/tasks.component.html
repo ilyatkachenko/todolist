@@ -1,37 +1,51 @@
 <mat-card>
-    <div class="example-container">
-        <form novalidate [formGroup]="myform" (submit)="addTask($event)">
-            <mat-form-field class="example-full-width">
-                <input matInput formControlName="title" placeholder="Add Task...">
-            </mat-form-field>
-            <mat-form-field class="example-half-width">
-                <textarea matInput formControlName="description" placeholder="Description..." matTextareaAutosize matAutosizeMinRows="1"
-                          matAutosizeMaxRows="3"></textarea>
-            </mat-form-field>
-            <mat-form-field class="example-half-width">
-                <input matInput formControlName="deadline" [matDatepicker]="picker" placeholder="Choose a deadline">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker touchUi="true" #picker></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-half-width">
-                <mat-select placeholder="Task status" disableRipple formControlName="status">
-                    <mat-option class="to-do" value="To Do">To Do</mat-option>
-                    <mat-option class="in-progress" value="In Progress">In Progress</mat-option>
-                    <mat-option class="completed" value="Completed">Completed</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field class="example-half-width">
-                <mat-select placeholder="Task priority" disableRipple formControlName="priority">
-                    <div *ngFor="let priority of priorities">
-                        <mat-option value="{{priority}}">{{priority}}</mat-option>
-                    </div>
-                </mat-select>
-            </mat-form-field>
-            <button class="float-right submit-btn" type="submit" mat-raised-button color="primary">Submit</button>
-        </form>
-    </div>
+    <mat-card>
+        <div class="example-container">
+            <h2>New task :</h2>
+            <form novalidate [formGroup]="myform" (submit)="addTask($event)">
+                <mat-form-field class="example-full-width">
+                    <input matInput formControlName="title" placeholder="Add Task...">
+                </mat-form-field>
+                <mat-form-field class="example-half-width">
+                    <textarea matInput formControlName="description" placeholder="Description..." matTextareaAutosize matAutosizeMinRows="1"
+                                matAutosizeMaxRows="3"></textarea>
+                </mat-form-field>
+                <mat-form-field class="example-half-width">
+                    <input matInput formControlName="deadline" [matDatepicker]="picker" placeholder="Choose a deadline">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi="true" #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="example-half-width">
+                    <mat-select placeholder="Task status" disableRipple formControlName="status">
+                        <mat-option class="to-do" value="To Do">To Do</mat-option>
+                        <mat-option class="in-progress" value="In Progress">In Progress</mat-option>
+                        <mat-option class="completed" value="Completed">Completed</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="example-half-width">
+                    <mat-select placeholder="Task priority" disableRipple formControlName="priority">
+                        <div *ngFor="let priority of priorities">
+                            <mat-option value="{{priority}}">{{priority}}</mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+                <button class="float-right submit-btn" type="submit" mat-raised-button color="primary">Submit</button>
+            </form>
+        </div>
+    </mat-card>
+   <mat-card class="filter">
+       <h2>Filter :</h2>
+       <mat-form-field class="example-half-width">
+            <mat-select placeholder="Task status" disableRipple [(ngModel)] = "filterStatus">
+                    <mat-option value="all">Show all</mat-option>
+                <mat-option class="to-do" value="To Do">To Do</mat-option>
+                <mat-option class="in-progress" value="In Progress">In Progress</mat-option>
+                <mat-option class="completed" value="Completed">Completed</mat-option>
+            </mat-select>
+        </mat-form-field>
+   </mat-card>
     <mat-card-content class="task-list">
-        <div *ngFor="let task of tasks">
+        <div *ngFor="let task of tasks | filterStatus : filterStatus">
             <mat-card>
                 <div class="row">
                     <div class="col-md-1">
@@ -41,10 +55,10 @@
                     <div class="col-md-5">
                         <h3 [class.to-do-title]="task.status == 'To Do'" [class.in-progress-title]="task.status == 'In Progress'" [class.completed-title]="task.status == 'Completed'">{{task.title}}</h3>
                         <h5>{{task.description}}</h5>
-                        <span class="font-italic">Created at : {{task.createdDate}}</span>
+                        <span class="font-italic">Created at : {{task.createdDate | date : "longDate"}}</span>
                     </div>
                     <div class="col-md-2">
-                        <span>Deadline : {{task.deadline}}</span>
+                        <span>Deadline : {{task.deadline | date : "longDate"}}</span>
                     </div>
                     <div class="col-md-2">
                         <p>Status : <span class="font-weight-bold" [class.to-do-title]="task.status == 'To Do'" [class.in-progress-title]="task.status == 'In Progress'" [class.completed-title]="task.status == 'Completed'">{{task.status}}</span></p>

@@ -29,25 +29,25 @@ export class TasksComponent implements OnInit {
     addTask(event) {
         event.preventDefault();
 
-        let d = new Date();
-        let curr_date = d.getDate();
-        let curr_month = d.getMonth() + 1;
-        let curr_year = d.getFullYear();
-        let currDate = curr_month + "/" + curr_date + "/" + curr_year;
+        // let d = new Date();
+        // let curr_date = d.getDate();
+        // let curr_month = d.getMonth() + 1;
+        // let curr_year = d.getFullYear();
+        // let currDate = curr_month + "/" + curr_date + "/" + curr_year;
 
-        let dl = this.myform.value.deadline;
-        let dl_date = dl.getDate();
-        let dl_month = dl.getMonth() + 1;
-        let dl_year = dl.getFullYear();
-        let dlDate = dl_month + "/" + dl_date + "/" + dl_year;
+        // let dl = this.myform.value.deadline;
+        // let dl_date = dl.getDate();
+        // let dl_month = dl.getMonth() + 1;
+        // let dl_year = dl.getFullYear();
+        // let dlDate = dl_month + "/" + dl_date + "/" + dl_year;
 
         let newTask = {
             _id: '',
             title: this.myform.value.title,
             description: this.myform.value.description,
             isDone: false,
-            createdDate: currDate,
-            deadline: dlDate,
+            createdDate: new Date(),
+            deadline: this.myform.value.deadline,
             status: this.myform.value.status,
             priority: this.myform.value.priority
         };
@@ -60,11 +60,6 @@ export class TasksComponent implements OnInit {
             this.taskService.addTask(newTask)
                 .subscribe(task => {
                     this.tasks.push(task);
-                    console.log(this.myform.value.title);
-                    this.myform.value.title = '';
-                    this.myform.value.description = '';
-                    this.myform.value.deadline = '';
-                    this.myform.value.status = '';
                 });
         }, 1000);
 

@@ -9,13 +9,15 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MaterialModule } from './Material/material.module';
 import { NavigationComponent } from './navigation/navigation.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FilterStatusPipe } from './pipes/filter-status.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     TasksComponent,
     DialogDataExampleDialog,
-    NavigationComponent
+    NavigationComponent,
+    FilterStatusPipe
   ],
   entryComponents: [
     DialogDataExampleDialog,
